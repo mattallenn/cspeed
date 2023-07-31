@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#define STR 12 
-#define LINES 250
+#include <string.h>
 
 int main() 
 {
@@ -15,15 +13,27 @@ int main()
     }
 
     // Creates 2d array, num_lines is a row, maxchar is the array or chars to make a string
-    char lines[LINE][STR];
+    char lines[1000][12];
     int line_counter = 0;
-
-    while (fgets(lines[LINE], CHARS, file) != NULL) {
+    
+    //Reads file, adding each word to a 2d array
+    while (fgets(lines[line_counter], 12, file) != NULL) {
         
-        //Removes the newline character
+        //Removes newline character from each word
+        lines[line_counter][strlen(lines[line_counter]) - 1] = '\0';
 
-        printf("%s", line);
+        //printf("%s", lines[line_counter]);
+
+        line_counter++;
+
+        if (line_counter >= 1000) {
+            break;
+        }
     }
-
+    
+    printf("%s\n", lines[999]);
+    
+    //closes out of file
+    fclose(file);
 }
 
