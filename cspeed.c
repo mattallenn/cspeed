@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 int main() 
 {
-  
+        //Opens file 
     FILE* file = fopen("1-1000.txt", "r");
     if (file == NULL) {
     
@@ -31,8 +32,14 @@ int main()
         }
     }
     
-    printf("%s\n", lines[999]);
-    
+    //prints random word from array
+    srand(time(NULL));
+
+    for (int i = 0; i < 1000; i++) {
+        int random = rand() % 1000;
+        printf("%s ", lines[random]);
+    }
+
     //closes out of file
     fclose(file);
 }
