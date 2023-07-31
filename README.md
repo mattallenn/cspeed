@@ -47,8 +47,8 @@ Note (incomplete)
 **Make sure to include <string.h>**
 
 **3. Generate random words**  
-
-	```c    
+	``` c    
+ 
 	  	#include <time.h>
 	  
 		//prints random word from array
