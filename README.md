@@ -18,9 +18,9 @@ Note (incomplete)
 - Check for file errors 
 	``` c
 	if (file == NULL) {
-		printf("Cannot open file\n");
-		exit(1);
-		}
+        printf("Cannot open file\n");
+        exit(1); 
+    }
 	```
 
 **2. Load file contents into an array**
@@ -29,33 +29,38 @@ Note (incomplete)
 - use `fgets()` to load contents from file one line at a time eg. `fgets(string, max num of chars, file)`
 - store str into its own index using a line counter eg.
 	```c
-		//Reads file, adding each word to a 2d array
-    		while (fgets(lines[line_counter], 12, file) != NULL) {
-	
-			//Removes newline character from each word
-			lines[line_counter][strlen(lines[line_counter]) - 1] = '\0';
-		
-			//printf("%s", lines[line_counter]);
-		
-			line_counter++;
-		
-			if (line_counter >= 1000) {
-			    break;
-			}
-		    }
+    #include <string.h>
+
+    //Reads file, adding each word to a 2d array
+    while (fgets(lines[line_counter], 12, file) != NULL) {
+
+        //Removes newline character from each word
+        lines[line_counter][strlen(lines[line_counter]) - 1] = '\0';
+
+        //printf("%s", lines[line_counter]);
+
+        line_counter++;
+
+        if (line_counter >= 1000) {
+            break;
+        }
+    }
 	```
-**Make sure to include <string.h>**
 
 **3. Generate random words**  
-	``` c    
- 
-	  	#include <time.h>
-	  
-		//prints random word from array
-		srand(time(NULL));
-		
-		for (int i = 0; i < 1000; i++) {
-			int random = rand() % 1000;
-			printf("%s ", lines[random]);
-		}
+- Include `<time.h` for the `srand()` function
+- Use the time since epoch to generate a seed 
+- Iterate through array and pick random words
+	```c    
+
+    #include <time.h>
+  
+    //prints random word from array
+    srand(time(NULL));
+    
+    for (int i = 0; i < 1000; i++) {
+        int random = rand() % 1000;
+        printf("%s ", lines[random]);
+    }
+
 	```
