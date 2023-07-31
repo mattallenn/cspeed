@@ -48,15 +48,14 @@ Note (incomplete)
 
 **3. Generate random words**  
 
-	```c
- 	
-  	#include <time.h>
-  
-	//prints random word from array
-	srand(time(NULL));
-	
-	for (int i = 0; i < 1000; i++) {
-		int random = rand() % 1000;
-		printf("%s ", lines[random]);
-	}
+	```c    
+	  	#include <time.h>
+	  
+		//prints random word from array
+		srand(time(NULL));
+		
+		for (int i = 0; i < 1000; i++) {
+			int random = rand() % 1000;
+			printf("%s ", lines[random]);
+		}
 	```
