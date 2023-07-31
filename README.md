@@ -30,18 +30,31 @@ Note (incomplete)
 - store str into its own index using a line counter eg.
 	```c
 	//Reads file, adding each word to a 2d array
-    while (fgets(lines[line_counter], 12, file) != NULL) {
-        
-        //Removes newline character from each word
-        lines[line_counter][strlen(lines[line_counter]) - 1] = '\0';
-
-        //printf("%s", lines[line_counter]);
-
-        line_counter++;
-
-        if (line_counter >= 1000) {
-            break;
-        }
-    }
+    	while (fgets(lines[line_counter], 12, file) != NULL) {
+	
+		//Removes newline character from each word
+		lines[line_counter][strlen(lines[line_counter]) - 1] = '\0';
+	
+		//printf("%s", lines[line_counter]);
+	
+		line_counter++;
+	
+		if (line_counter >= 1000) {
+		    break;
+		}
+	    }
 	```
 **Make sure to include <string.h>**
+
+**3. Generate random words**  
+	```c
+	#include <time.h>
+  
+	//prints random word from array
+	srand(time(NULL));
+	
+	for (int i = 0; i < 1000; i++) {
+		int random = rand() % 1000;
+		printf("%s ", lines[random]);
+	}
+	```
