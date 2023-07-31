@@ -1,5 +1,18 @@
 # cspeed
-A simple, lightweight, fast typing speed game written in C.
+### A simple, lightweight, fast typing speed game written in C.
+
+# Dependencies
+**ncurses** - terminal manipulation  
+### Installation  
+- macOS `brew install ncurses`
+- Linux
+	- Arch: `sudo pacman -S ncurses`
+ 	- Ubuntu: `sudo apt-get install libncurses5-dev libncursesw5-dev`
+  	- *For other distros / package managers, feel free submit a pull request of the command needed*
+- Windows `god help you, try this link though https://e-l.unifi.it/pluginfile.php/805205/mod_resource/content/0/ncurses%20installation%20-%20en.pdf`
+
+# Tutorial
+Note (incomplete)
 
 **1. Open File**
 - Check for file errors 
