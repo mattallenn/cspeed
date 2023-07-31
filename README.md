@@ -29,24 +29,25 @@ Note (incomplete)
 - use `fgets()` to load contents from file one line at a time eg. `fgets(string, max num of chars, file)`
 - store str into its own index using a line counter eg.
 	```c
-	//Reads file, adding each word to a 2d array
-    	while (fgets(lines[line_counter], 12, file) != NULL) {
+		//Reads file, adding each word to a 2d array
+    		while (fgets(lines[line_counter], 12, file) != NULL) {
 	
-		//Removes newline character from each word
-		lines[line_counter][strlen(lines[line_counter]) - 1] = '\0';
-	
-		//printf("%s", lines[line_counter]);
-	
-		line_counter++;
-	
-		if (line_counter >= 1000) {
-		    break;
-		}
-	    }
+			//Removes newline character from each word
+			lines[line_counter][strlen(lines[line_counter]) - 1] = '\0';
+		
+			//printf("%s", lines[line_counter]);
+		
+			line_counter++;
+		
+			if (line_counter >= 1000) {
+			    break;
+			}
+		    }
 	```
 **Make sure to include <string.h>**
 
 **3. Generate random words**  
+
 	```c
 	#include <time.h>
   
