@@ -49,7 +49,8 @@ Note (incomplete)
 **3. Generate random words**  
 
 	```c
-	#include <time.h>
+ 	
+  	#include <time.h>
   
 	//prints random word from array
 	srand(time(NULL));
