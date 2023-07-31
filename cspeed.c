@@ -1,35 +1,29 @@
 #include <stdio.h>
-#include <ncurses.h>
+#include <stdlib.h>
+
+#define STR 12 
+#define LINES 250
 
 int main() 
 {
-     // initialize ncurses    
-    initscr();
-   
-    // check if terminal supports color
-    if (has_colors() == FALSE) {
-        printf("Terminal does not support color\n");
-        return 1;
+  
+    FILE* file = fopen("1-1000.txt", "r");
+    if (file == NULL) {
+    
+        printf("Error opening file\n");
+        exit(1);
     }
 
+    // Creates 2d array, num_lines is a row, maxchar is the array or chars to make a string
+    char lines[LINE][STR];
+    int line_counter = 0;
 
-    start_color();
+    while (fgets(lines[LINE], CHARS, file) != NULL) {
+        
+        //Removes the newline character
 
-    //Defines color pairs
-    init_pair(1, COLOR_CYAN, COLOR_BLACK);
-    
-    //Print text
-    attron(COLOR_PAIR(1));
-    printw("This is a string\n");
-    attroff(COLOR_PAIR(1));
+        printf("%s", line);
+    }
 
-    //refreshes screen
-    refresh();
-
-    //waits for user input
-    getch();
-
-    endwin();
-
-    return 0;
 }
+

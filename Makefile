@@ -2,8 +2,8 @@ CC = gcc
 CFLAGS = -Wall
 LDFLAGS = -lncurses	
 
-TARGET = terminaltype 
-SOURCE = terminaltype.c
+TARGET = cspeed 
+SOURCE = cspeed.c
 	
 all: $(TARGET)
 	
