@@ -10,6 +10,8 @@ int main()
 {
     char result[NUM_WORDS * 15]; //Array of all characters of selected words
     int result_index = 0;
+    int cursor_index = 0;
+    char input;
 
     initscr(); //Starts Curses
     raw(); //Disables line buffering
@@ -60,10 +62,39 @@ int main()
     
     result[result_index] = '\0'; //Adds null character to end of string
 
-    printw("%s", result); //Prints string to screen
+    printw("%s\n", result); //Prints string to screen
+    
+    while(1) {
+        input = getch(); //Waits for user input
+        
+        if (input == 27) { //If escape key is pressed, exit program
+            break;
+        }
 
-    refresh();     
-    getch(); //Waits for user input
+        //If input is correct, make character bold
+        if (input == result[cursor_index]) {
+
+            clear();
+            refresh();
+
+            attron(A_BOLD);
+            for (int i = 0; i < cursor_index; i++) { //Prints correct text bold 
+                printw("%c", result[i]);
+            }
+            attroff(A_BOLD);
+
+            for (int i = cursor_index; i < sizeof(result); i++) {
+                printw("%c", result[i]);
+             }
+
+
+            cursor_index++;
+        }
+        refresh();     
+    }
+
+        
+
     endwin();              
     //closes out of file
     fclose(file);
