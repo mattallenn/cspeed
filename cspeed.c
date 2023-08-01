@@ -1,10 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <ncurses.h>
+
+#define NUM_WORDS 25
 
 int main() 
 {
-  
+    char result[NUM_WORDS * 15]; //Array of all characters of selected words
+    int result_index = 0;
+
+    initscr(); //Starts Curses
+    raw(); //Disables line buffering
+    noecho(); //Disables echoing of characters
+
+    
+    //Opens file 
     FILE* file = fopen("1-1000.txt", "r");
     if (file == NULL) {
     
@@ -13,7 +25,7 @@ int main()
     }
 
     // Creates 2d array, num_lines is a row, maxchar is the array or chars to make a string
-    char lines[1000][12];
+    char lines[500][12];
     int line_counter = 0;
     
     //Reads file, adding each word to a 2d array
@@ -26,14 +38,36 @@ int main()
 
         line_counter++;
 
-        if (line_counter >= 1000) {
+        if (line_counter >= 500) {
             break;
         }
     }
     
-    printf("%s\n", lines[999]);
+    //prints random word from array
+    srand(time(NULL));
+   
+    //Adds random words into result array
+    for (int i = 0; i < NUM_WORDS; i++) {
+        int random = rand() % 500;
+        int line_length = strlen(lines[random]);
+        strcpy(&result[result_index], lines[random]);
+        result_index += line_length; 
+
+        //Add spaces inbetween words
+        result[result_index] = ' ';
+        result_index++;
+    }
     
+    result[result_index] = '\0'; //Adds null character to end of string
+
+    printw("%s", result); //Prints string to screen
+
+    refresh();     
+    getch(); //Waits for user input
+    endwin();              
     //closes out of file
     fclose(file);
+
+    return 0;
 }
 
