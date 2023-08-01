@@ -8,7 +8,8 @@
 
 int main() 
 {
-    char text[NUM_WORDS * 12]; //Array of all characters of selected words
+    char result[NUM_WORDS * 15]; //Array of all characters of selected words
+    int result_index = 0;
 
     initscr(); //Starts Curses
     raw(); //Disables line buffering
@@ -44,14 +45,23 @@ int main()
     
     //prints random word from array
     srand(time(NULL));
-    
-    attron(A_BOLD); //Makes text bold
+   
+    //Adds random words into result array
     for (int i = 0; i < NUM_WORDS; i++) {
         int random = rand() % 500;
-        printw("%s ", lines[random]);
+        int line_length = strlen(lines[random]);
+        strcpy(&result[result_index], lines[random]);
+        result_index += line_length; 
+
+        //Add spaces inbetween words
+        result[result_index] = ' ';
+        result_index++;
     }
-    attroff(A_BOLD); //Turns off bold
     
+    result[result_index] = '\0'; //Adds null character to end of string
+
+    printw("%s", result); //Prints string to screen
+
     refresh();     
     getch(); //Waits for user input
     endwin();              
