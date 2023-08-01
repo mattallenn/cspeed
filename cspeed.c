@@ -5,43 +5,46 @@
 #include <ncurses.h>
 
 
-#define NUM_WORDS 25
+#define NUM_WORDS 25 
 #define TEXT_WIDTH 36
-#define TEXT_HEIGHT 5
+
+int arr_length(char arr[]) {
+    int length = 0;
+    while (arr[length] != '\0') {
+        length++;
+    }
+    return length;
+}
+
 int main() 
 {
 
-
     char result[NUM_WORDS * 15]; //Array of all characters of selected words
     int result_index = 0;
-    int cursor_index = 0;
     char input;
 
     initscr(); //Starts Curses
     cbreak(); //Disables line buffering
     noecho(); //Disables echoing of characters
-
+    curs_set(0); //Disables cursor
+                       
     //Gets size of terminal to center text
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
-    int text_width = TEXT_WIDTH;
-    int text_height = TEXT_HEIGHT;
-    int row = (max_y / 2) - (text_height / 2);
-    int col = (max_x / 2) - (text_width / 2);
+    int row = (max_y / 2);
+    int col = (max_x / 2);
     
-    move(row, col); //Moves cursor to center of screen
-    printw("%d\n", row);
-    printw("%d", col);
-    printw(
-    "                                 __ \n"
-    ".----.-----.-----.-----.-----.--|  |\n"
-    "|  __|__ --|  _  |  -__|  -__|  _  |\n"
-    "|____|_____|   __|_____|_____|_____|\n"
-     "          |__|                        ");
-    
+    //Displays homepage
+    char message []= "Welcome to cspeed!";
+    char message2 []= "Press any key to start";
+    char message3 []= "Press ESC to exit";
+    //Displays homepage
+    mvprintw(row, (col - (arr_length(message)/2)), "%s", message); //Prints text to screen
+    mvprintw(row + 1, (col - (arr_length(message2)/2)), "%s", message2); //Prints text to screen
+    mvprintw(row + 2, (col - (arr_length(message3)/2)), "%s", message3); //Prints text to screen
     refresh(); //Refreshes screen to show text
                
-    //Opens file 
+    /* //Opens file */ 
     FILE* file = fopen("1-1000.txt", "r");
     if (file == NULL) {
     
@@ -85,47 +88,70 @@ int main()
     
     result[result_index] = '\0'; //Adds null character to end of string
     
-    int result_length = sizeof(result) / sizeof(result[0]); //finds length of array for later use
+    int result_length = arr_length(result); 
+
     
-    printw("\nPress ESC to exit\n");
     
-    cursor_index = -1; //Sets to 0 so it can check if first char typed
+    /* cursor_index = 0; //Sets to 0 so it can check if first char typed */
 
     LOOP:while(1) {
+
         input = getch(); //Waits for user input
         
-        if (cursor_index == -1) { //handles edge case where first char causes pointer to go out of index
-            cursor_index++;
+        //If tab is entered, clear screen and print text beginning game
+        if (input == 9) {
+            clear();
+            
+            //breaks up result array into lines of max chars available
+            int width = (max_x) / 2;
+            int height = (max_y) / 2;
+            int num_lines = 0;
+
+            printw("%d", width);
+            refresh();
+            for (int i = 0; i < result_length; i++) {
+                if ((i % (width - 10)) == 0) {
+                   num_lines++;
+                }
+                
+                mvprintw((height + num_lines), (width  - (result_length /2 )), "%c", result[i]);
+
+                width++;
+            }
+
+            refresh(); //Refreshes screen to show text
             goto LOOP;
         }
+
+               
         if (input == 27) { //If escape key is pressed, exit program
-            break;
+            exit(0);
         }
 
-        //If input is correct, make character bold
-        if (input == result[cursor_index]) {
+        /* //If input is correct, make character bold */
+        /* if (input == result[cursor_index]) { */
    
-            clear();
-            refresh();
+        /*     clear(); */
+        /*     refresh(); */
 
-            attron(A_BOLD);
-            for (int i = 0; i < cursor_index; i++) { //Prints correct text bold 
-                printw("%c", result[i]);
-            }
-            attroff(A_BOLD);
+        /*     attron(A_BOLD); */
+        /*     for (int i = 0; i < cursor_index; i++) { //Prints correct text bold */ 
+        /*         printw("%c", result[i]); */
+        /*     } */
+        /*     attroff(A_BOLD); */
 
-            for (int i = cursor_index; i < (result_length - 1); i++) {
-                printw("%c", result[i]);
-             }
+        /*     for (int i = cursor_index; i < (result_length - 1); i++) { */
+        /*         printw("%c", result[i]); */
+        /*      } */
 
 
-            cursor_index++;
-        }
+        /*     cursor_index++; */
+        /* } */
 
-        //else do nothing
-        else {
-            continue;
-        }
+        /* //else do nothing */
+        /* else { */
+        /*     continue; */
+        /* } */
     }
 
         
