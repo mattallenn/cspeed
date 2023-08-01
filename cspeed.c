@@ -4,10 +4,14 @@
 #include <time.h>
 #include <ncurses.h>
 
-#define NUM_WORDS 25
 
+#define NUM_WORDS 25
+#define TEXT_WIDTH 36
+#define TEXT_HEIGHT 5
 int main() 
 {
+
+
     char result[NUM_WORDS * 15]; //Array of all characters of selected words
     int result_index = 0;
     int cursor_index = 0;
@@ -17,7 +21,26 @@ int main()
     cbreak(); //Disables line buffering
     noecho(); //Disables echoing of characters
 
+    //Gets size of terminal to center text
+    int max_y, max_x;
+    getmaxyx(stdscr, max_y, max_x);
+    int text_width = TEXT_WIDTH;
+    int text_height = TEXT_HEIGHT;
+    int row = (max_y / 2) - (text_height / 2);
+    int col = (max_x / 2) - (text_width / 2);
     
+    move(row, col); //Moves cursor to center of screen
+    printw("%d\n", row);
+    printw("%d", col);
+    printw(
+    "                                 __ \n"
+    ".----.-----.-----.-----.-----.--|  |\n"
+    "|  __|__ --|  _  |  -__|  -__|  _  |\n"
+    "|____|_____|   __|_____|_____|_____|\n"
+     "          |__|                        ");
+    
+    refresh(); //Refreshes screen to show text
+               
     //Opens file 
     FILE* file = fopen("1-1000.txt", "r");
     if (file == NULL) {
@@ -63,8 +86,7 @@ int main()
     result[result_index] = '\0'; //Adds null character to end of string
     
     int result_length = sizeof(result) / sizeof(result[0]); //finds length of array for later use
-    printw("%d\n", result_length);
-    printw("%s\n", result); //Prints string to screen
+    
     printw("\nPress ESC to exit\n");
     
     cursor_index = -1; //Sets to 0 so it can check if first char typed
@@ -92,7 +114,7 @@ int main()
             }
             attroff(A_BOLD);
 
-            for (int i = cursor_index; i < (result_length - 250); i++) {
+            for (int i = cursor_index; i < (result_length - 1); i++) {
                 printw("%c", result[i]);
              }
 
