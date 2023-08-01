@@ -14,7 +14,7 @@ int main()
     char input;
 
     initscr(); //Starts Curses
-    raw(); //Disables line buffering
+    cbreak(); //Disables line buffering
     noecho(); //Disables echoing of characters
 
     
@@ -61,19 +61,28 @@ int main()
     }
     
     result[result_index] = '\0'; //Adds null character to end of string
-
-    printw("%s\n", result); //Prints string to screen
     
-    while(1) {
+    int result_length = sizeof(result) / sizeof(result[0]); //finds length of array for later use
+    printw("%d\n", result_length);
+    printw("%s\n", result); //Prints string to screen
+    printw("\nPress ESC to exit\n");
+    
+    cursor_index = -1; //Sets to 0 so it can check if first char typed
+
+    LOOP:while(1) {
         input = getch(); //Waits for user input
         
+        if (cursor_index == -1) { //handles edge case where first char causes pointer to go out of index
+            cursor_index++;
+            goto LOOP;
+        }
         if (input == 27) { //If escape key is pressed, exit program
             break;
         }
 
         //If input is correct, make character bold
         if (input == result[cursor_index]) {
-
+   
             clear();
             refresh();
 
@@ -83,14 +92,18 @@ int main()
             }
             attroff(A_BOLD);
 
-            for (int i = cursor_index; i < sizeof(result); i++) {
+            for (int i = cursor_index; i < (result_length - 250); i++) {
                 printw("%c", result[i]);
              }
 
 
             cursor_index++;
         }
-        refresh();     
+
+        //else do nothing
+        else {
+            continue;
+        }
     }
 
         
