@@ -8,6 +8,11 @@
 #define NUM_WORDS 25 
 #define TEXT_WIDTH 36
 
+typedef struct {
+    int column;
+    int row;
+} Cursor;
+
 int arr_length(char arr[]) {
     int length = 0;
     while (arr[length] != '\0') {
@@ -18,7 +23,8 @@ int arr_length(char arr[]) {
 
 int main() 
 {
-
+    bool startgame = false;
+    int cursor_index = 0; //Keeps track of which character user is on
     char result[NUM_WORDS * 15]; //Array of all characters of selected words
     int result_index = 0;
     char input;
@@ -90,9 +96,7 @@ int main()
     
     int result_length = arr_length(result); 
 
-    
-    
-    /* cursor_index = 0; //Sets to 0 so it can check if first char typed */
+    Cursor cursor_arr[result_length]; //Array of cursor structs  
 
     LOOP:while(1) {
 
@@ -107,7 +111,6 @@ int main()
             int height = (max_y) / 2;
             int num_lines = 0;
 
-            printw("%d", width);
             refresh();
             for (int i = 0; i < result_length; i++) {
                 if ((i % (width - 10)) == 0) {
@@ -117,13 +120,31 @@ int main()
                 mvprintw((height + num_lines), (width  - (result_length /2 )), "%c", result[i]);
 
                 width++;
-            }
+
+                cursor_arr[i].column = width - (result_length / 2);
+                cursor_arr[i].row = height + num_lines;
+            
 
             refresh(); //Refreshes screen to show text
+            startgame = true; //Starts game
             goto LOOP;
+            }
+        }
+        
+        //Start game
+        if (input != 9 && startgame == true) {
+            if (input == result[cursor_index]) {
+                
+                attron(A_BOLD);
+                mvchgat(cursor_arr[cursor_index].row, cursor_arr[cursor_index].column, 1, A_BOLD, 1, NULL);
+                attroff(A_BOLD);
+
+                cursor_index++;
+
+                refresh();
+            } 
         }
 
-               
         if (input == 27) { //If escape key is pressed, exit program
             exit(0);
         }
