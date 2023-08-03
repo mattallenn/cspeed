@@ -3,10 +3,11 @@
 #include <string.h>
 #include <time.h>
 #include <ncurses.h>
+#include <math.h>
 
-
-#define NUM_WORDS 25 
+#define NUM_WORDS 10 
 #define TEXT_WIDTH 36
+#define NANO_PER_SEC 1000000000
 
 typedef struct {
     int column;
@@ -23,6 +24,10 @@ int arr_length(char arr[]) {
 
 int main() 
 {
+    struct timespec start, end;
+    /* int miss_counter = 0; */
+    double elapsed_time;
+    int input_counter = 0;
     bool startgame = false;
     int cursor_index = 0; //Keeps track of which character user is on
     char result[NUM_WORDS * 15]; //Array of all characters of selected words
@@ -98,89 +103,84 @@ int main()
 
     Cursor cursor_arr[result_length]; //Array of cursor structs  
 
-    LOOP:while(1) {
-
-        input = getch(); //Waits for user input
+    input = getch();
+    if (input != 27) { // If Escape key is not pressed, start the game
+        clear();
+        startgame = true;
         
-        //If tab is entered, clear screen and print text beginning game
-        if (input == 9) {
-            clear();
-            
-            //breaks up result array into lines of max chars available
-            int width = (max_x) / 2;
-            int height = (max_y) / 2;
-            int num_lines = 0;
+    }
 
-            refresh();
-            for (int i = 0; i < result_length; i++) {
-                if ((i % (width - 10)) == 0) {
-                   num_lines++;
-                }
-                
-                mvprintw((height + num_lines), (width  - (result_length /2 )), "%c", result[i]);
+    if (startgame) {
+        // Display the text on the screen
+        int width = (max_x) / 2;
+        int height = (max_y) / 2;
+        int num_lines = 0;
 
-                width++;
-
-                cursor_arr[i].column = width - (result_length / 2);
-                cursor_arr[i].row = height + num_lines;
-            
-
-            refresh(); //Refreshes screen to show text
-            startgame = true; //Starts game
-            goto LOOP;
+        refresh();
+        for (int i = 0; i < result_length; i++) {
+            if ((i % (width - 10)) == 0) {
+                num_lines++;
             }
+
+            mvprintw((height + num_lines), (width - (result_length / 2)), "%c", result[i]);
+
+            width++;
+
+            cursor_arr[i].column = width - (result_length / 2);
+            cursor_arr[i].row = height + num_lines;
         }
+
+        // Makes first character flash
+        refresh(); // Refreshes screen to show text
+    }
+
+
+    // Main game loop
+    while (1) 
+        {
         
-        //Start game
-        if (input != 9 && startgame == true) {
-            if (input == result[cursor_index]) {
-                
+       input = getch(); // Waits for user input
+        
+        if (input_counter == 0) {
+            clock_gettime(CLOCK_MONOTONIC, &start);
+            input_counter++;
+        }
+
+        if (input == 27) { // If escape key is pressed, exit program
+            exit(0);
+        }
+
+        if (startgame) {
+            if (input == result[cursor_index + 1]) {
+                // If input is correct, make the character bold
                 attron(A_BOLD);
                 mvchgat(cursor_arr[cursor_index].row, cursor_arr[cursor_index].column, 1, A_BOLD, 1, NULL);
                 attroff(A_BOLD);
 
                 cursor_index++;
+            }
 
-                refresh();
-            } 
         }
+        if ((cursor_index + 1) >= result_length) {
+            clear();
+            clock_gettime(CLOCK_MONOTONIC, &end);
+            elapsed_time = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / (double) NANO_PER_SEC; 
+            
+            mvprintw(row, (col - (17)), "You finished in %.2f seconds!", elapsed_time); //Prints text to screen
+            int raw_wpm = round((result_length / 5) / ((elapsed_time) / 60)); 
 
-        if (input == 27) { //If escape key is pressed, exit program
-            exit(0);
+            /* long adj_wpm = ((result_length / 5) - miss_counter) / (end_time / 60); */
+            /* printw("You finished in %f seconds!", end_time); //Prints text to screen */
+            mvprintw(row + 2, (col - (17)), "%d WPM", raw_wpm); //Prints text to screen */
+            refresh();
+            break;
         }
-
-        /* //If input is correct, make character bold */
-        /* if (input == result[cursor_index]) { */
-   
-        /*     clear(); */
-        /*     refresh(); */
-
-        /*     attron(A_BOLD); */
-        /*     for (int i = 0; i < cursor_index; i++) { //Prints correct text bold */ 
-        /*         printw("%c", result[i]); */
-        /*     } */
-        /*     attroff(A_BOLD); */
-
-        /*     for (int i = cursor_index; i < (result_length - 1); i++) { */
-        /*         printw("%c", result[i]); */
-        /*      } */
-
-
-        /*     cursor_index++; */
-        /* } */
-
-        /* //else do nothing */
-        /* else { */
-        /*     continue; */
-        /* } */
     }
+    
+    getch();
 
-        
-
-    endwin();              
-    //closes out of file
-    fclose(file);
-
+    endwin(); // Closes the ncurses window
+    fclose(file); // Closes the file
     return 0;
-}
-
+    }
+    
