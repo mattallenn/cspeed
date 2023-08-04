@@ -5,7 +5,7 @@
 #include <ncurses.h>
 #include <math.h>
 
-#define NUM_WORDS 10 
+#define NUM_WORDS 25
 #define TEXT_WIDTH 36
 #define NANO_PER_SEC 1000000000
 
@@ -159,6 +159,9 @@ int main()
 
                 cursor_index++;
             }
+            /* else { */
+            /*     /1* miss_counter++; *1/ */
+            /* } */
 
         }
         if ((cursor_index + 1) >= result_length) {
@@ -168,10 +171,11 @@ int main()
             
             mvprintw(row, (col - (17)), "You finished in %.2f seconds!", elapsed_time); //Prints text to screen
             int raw_wpm = round((result_length / 5) / ((elapsed_time) / 60)); 
-
+            /* int net_wpm = round(((result_length / 5) - miss_counter) / ((elapsed_time) / 60)); */
             /* long adj_wpm = ((result_length / 5) - miss_counter) / (end_time / 60); */
             /* printw("You finished in %f seconds!", end_time); //Prints text to screen */
-            mvprintw(row + 2, (col - (17)), "%d WPM", raw_wpm); //Prints text to screen */
+            mvprintw(row + 2, (col - (17)), "%d Raw WPM", raw_wpm); //Prints text to screen */
+            /* mvprintw(row + 3, (col - (17)), "%d Net WPM", net_wpm); //Prints text to screen *1/ */
             refresh();
             break;
         }
