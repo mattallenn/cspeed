@@ -4,7 +4,7 @@
 ## Installation
 
 1. Make sure you have the [Dependencies](#dependencies)
-2. Run `git clone https://github/mattallenn/cspeed.git
+2. Run `git clone https://github/mattallenn/cspeed.git`
 3. Compile `cspeed.c`, if you have gcc installed, run `make`
 4. Run `./cspeed`
 
