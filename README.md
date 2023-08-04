@@ -1,9 +1,15 @@
 # cspeed
 ### A simple, lightweight, fast typing speed game written in C.
 
-# Dependencies
+## Installation
+
+1. Make sure you have the [Dependencies](#dependencies)
+2. Run `git clone https://github/mattallenn/cspeed.git
+3. Compile `cspeed.c`, if you have gcc installed, run `make`
+4. Run `./cspeed`
+
+## Dependencies
 **ncurses** - terminal manipulation  
-### Installation  
 - macOS `brew install ncurses`
 - Linux
 	- Arch: `sudo pacman -S ncurses`
@@ -11,8 +17,8 @@
   	- *For other distros / package managers, feel free submit a pull request of the command needed*
 - Windows `god help you, try this link though https://e-l.unifi.it/pluginfile.php/805205/mod_resource/content/0/ncurses%20installation%20-%20en.pdf`
 
-# Tutorial
-Note (incomplete)
+## Tutorial (**INCOMPLETE**)
+
 
 **1. Open File**
 - Check for file errors 
